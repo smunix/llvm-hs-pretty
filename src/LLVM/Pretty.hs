@@ -271,9 +271,7 @@ instance Pretty Global where
       kind | isConstant = "constant"
            | otherwise  = "global"
 
-  pretty GlobalAlias {..} = global (pretty name) <+> "=" <+> pretty linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pretty typ `cma` ppTyped aliasee
-    where
-      typ = getElementType type'
+  pretty GlobalAlias {..} = global (pretty name) <+> "=" <+> pretty linkage <+> ppMaybe unnamedAddr <+> "alias" <+> pretty type' `cma` ppTyped aliasee
 
 ppFunctionAttribute :: Either GroupID FunctionAttribute -> Doc ann
 ppFunctionAttribute (Left grpId) = pretty grpId
@@ -477,7 +475,7 @@ instance Pretty Terminator where
      brackets (hsep [ label (pretty l) | l <- dests ])
      <+> ppInstrMeta meta
 
-    e @ Invoke {..} ->
+    e@Invoke {..} ->
      ppInvoke e
      <+> "to" <+> label (pretty returnDest)
      <+> "unwind" <+> label (pretty exceptionDest)
